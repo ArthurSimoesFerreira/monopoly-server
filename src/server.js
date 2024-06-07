@@ -2,38 +2,37 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import { setupSocketEvents } from './events/index.js';
+import { Game } from './models/Game.js';
 
 const app = express();
 const server = http.createServer(app);
 
 // Configuração do CORS para permitir solicitações do front-end
 app.use(cors({
-    origin: "http://localhost:3000", // Endereço do seu front-end
+    origin: "http://localhost:3000", // Endereço do front-end
     methods: ["GET", "POST"]
 }));
 
 // Inicialização do Socket.IO com suporte a CORS
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000", // Endereço do seu front-end
+        origin: "http://localhost:3000", // Endereço do front-end
         methods: ["GET", "POST"]
     }
 });
 
+const game = new Game();
+
 io.on('connection', (socket) => {
     console.log('a user connected:', socket.id);
 
-    // Emissão de um evento de saudação quando um usuário se conecta
-    socket.emit('message', 'Welcome to the Monopoly game!');
-
-    // Tratamento de eventos personalizados aqui
-    socket.on('rollDice', () => {
-        const diceRoll = Math.floor(Math.random() * 6) + 1;
-        io.emit('diceResult', { id: socket.id, diceRoll });
-    });
+    setupSocketEvents(io, socket, game);
 
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);
+        game.removePlayer(socket.id);
+        io.emit('playerUpdate', game.players);
     });
 });
 
