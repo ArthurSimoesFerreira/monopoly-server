@@ -1,5 +1,8 @@
-export class Property {
-    constructor(propertyName, owner, price, rent) {
+import { House } from "../House";
+
+export class Property extends House {
+    constructor(positionOnBoard, propertyName, owner, price, rent) {
+        super(positionOnBoard)
         this.property_name = propertyName;
         this.owner = owner;
         this.price = price;

@@ -1,3 +1,5 @@
+import { Property } from "../Property";
+
 export class Station extends Property {
     constructor(propertyName, owner, price, rent) {
         super(propertyName, owner, price, rent);
