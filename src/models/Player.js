@@ -3,12 +3,11 @@ export class Player {
     constructor(id, name) {
         this.id = id;
         this.name = name;
-        this.position = 0;
         this.money = 1500;
-    }
-
-    move(spaces) {
-        this.position = (this.position + spaces) % 40;
+        this.properties = 0;
+        this.services = 0;
+        this.cards = 0;
+        this.stations = 0;
     }
 
     adjustMoney(amount) {
