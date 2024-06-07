@@ -8,6 +8,8 @@ export class Player {
         this.services = 0;
         this.cards = 0;
         this.stations = 0;
+        this.arrested = false;
+        this.broke = false;
     }
 
     adjustMoney(amount) {
