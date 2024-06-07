@@ -1,7 +1,10 @@
 // src/models/Game.js
+import { Dice } from './Dice.js'; // Importa a classe Dice
+
 export class Game {
     constructor() {
         this.players = {};
+        this.dices = [new Dice(), new Dice()]; // Cria uma lista de dois dados
     }
 
     addPlayer(id, name) {
@@ -10,5 +13,10 @@ export class Game {
 
     removePlayer(id) {
         delete this.players[id];
+    }
+
+    rollAllDice() {
+        this.dices.forEach(dice => dice.roll());
+        return this.dices.map(dice => dice.value);
     }
 }
