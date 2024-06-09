@@ -1,23 +1,65 @@
 // src/models/Game.js
-import { Player } from './player.js'; // Importa a classe Player
-import { Dice } from './Dice.js'; // Importa a classe Dice
+import { Player } from './Player.js';
+import { Dice } from './Dice.js';
+import { Bank } from './Bank.js';
 
 export class Game {
     constructor() {
         this.players = {};
-        this.dices = [new Dice(), new Dice()]; // Cria uma lista de dois dados
+        this.dice = [new Dice(), new Dice()]; // Cria uma lista de dois dados
+        this.bank = new Bank(); // Adiciona uma instância do banco
     }
 
     addPlayer(id, name) {
-        this.players[id] = new Player(id, name); // Cria um novo jogador
+        this.players[id] = new Player(id, name);
     }
 
     removePlayer(id) {
-        delete this.players[id]; // Remove um jogador existente
+        delete this.players[id];
     }
 
     rollAllDice() {
-        this.dices.forEach(dice => dice.roll()); // Rola todos os dados
-        return this.dices.map(dice => dice.value); // Retorna os valores dos dados
+        this.dice.forEach(die => die.roll());
+        return this.dice.map(die => die.value);
+    }
+
+    handleTransaction(senderId, receiverId, amount) {
+        const sender = this.players[senderId];
+        const receiver = this.players[receiverId];
+        if (sender && receiver) {
+            return this.bank.transferMoney(sender, receiver, amount);
+        }
+        return false;
+    }
+
+    handleBankPayment(playerId, amount) {
+        const player = this.players[playerId];
+        if (player) {
+            this.bank.giveMoney(player, amount);
+        }
+    }
+
+    handleBankCollection(playerId, amount) {
+        const player = this.players[playerId];
+        if (player) {
+            return this.bank.collectMoney(player, amount);
+        }
+        return false;
+    }
+
+    handleBuyHouse(playerId, cost) {
+        const player = this.players[playerId];
+        if (player) {
+            return this.bank.buyHouse(player, cost);
+        }
+        return false;
+    }
+
+    handleBuyHotel(playerId, cost) {
+        const player = this.players[playerId];
+        if (player) {
+            return this.bank.buyHotel(player, cost);
+        }
+        return false;
     }
 }

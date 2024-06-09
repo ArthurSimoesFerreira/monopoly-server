@@ -1,6 +1,7 @@
+import { House } from "../House";
+
 export class GoToJail extends House {
-    constructor(positionOnBoard) {
-        super(positionOnBoard);
+    visit(player, bank) {
+        // Lógica de visita para ir para a prisão
     }
-    visit(player, bank) { }
 }

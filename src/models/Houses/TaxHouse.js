@@ -1,6 +1,6 @@
+import { House } from "../House";
 export class TaxHouse extends House {
-    constructor(positionOnBoard) {
-        super(positionOnBoard);
+    visit(player, bank) {
+        // Lógica de visita para a casa de imposto
     }
-    visit(player, bank) { }
 }

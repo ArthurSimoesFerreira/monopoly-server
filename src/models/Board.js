@@ -1,16 +1,28 @@
 // src/models/Board.js
+import { Player } from './Player.js';
+import { Property } from './Property.js';
+import { House } from './House.js';
+
 export class Board {
     constructor() {
-        this.house_quantity = 0;
-        this.positions = [];
-        this.current_house = null;
+        this.houseQuantity = 0;
+        this.positions = []; // [{ pawn: Pawn, position: int }]
+        this.currentHouse = null;
     }
 
-    initialize_board() { }
+    initializeBoard() {
+        // Lógica para inicializar o tabuleiro
+    }
 
-    move_piece(player, moveSpaces) { }
+    movePawn(player, moveSpaces) {
+        // Lógica para mover o peão do jogador
+    }
 
-    transfer_piece(player, finalPosition) { }
+    transferPawn(player, finalPosition) {
+        // Lógica para transferir o peão do jogador para a posição final
+    }
 
-    same_owner_count(player, property) { }
+    sameOwnerCount(player, property) {
+        // Lógica para contar quantas propriedades o jogador possui do mesmo tipo
+    }
 }

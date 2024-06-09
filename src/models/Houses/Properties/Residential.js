@@ -1,19 +1,29 @@
 import { Property } from "../Property";
 
 export class Residential extends Property {
-    constructor(propertyName, owner, price, rent) {
-        super(propertyName, owner, price, rent);
-        this.houses = 0;
-        this.hotel = false;
+    constructor(boardPosition, propertyName, price, rent, houses, hotel) {
+        super(boardPosition, propertyName, price, rent);
+        this.houses = houses;
+        this.hotel = hotel;
     }
 
-    pay_rent(player, bank) { }
+    payRent(player, bank) {
+        // Lógica de pagamento de aluguel
+    }
 
-    buy_house(bank) { }
+    buyHouse(bank) {
+        // Lógica de compra de casa
+    }
 
-    sell_house(bank) { }
+    sellHouse(bank) {
+        // Lógica de venda de casa
+    }
 
-    rent_value() { }
+    rentValue() {
+        // Lógica para calcular o valor do aluguel
+    }
 
-    visit(player, bank) { }
+    visit(player, bank) {
+        // Lógica de visita
+    }
 }

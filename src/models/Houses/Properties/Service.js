@@ -1,13 +1,18 @@
 import { Property } from "../Property";
-
 export class Service extends Property {
-    constructor(propertyName, owner, price, rent) {
-        super(propertyName, owner, price, rent);
+    constructor(boardPosition, propertyName, price, rent) {
+        super(boardPosition, propertyName, price, rent);
     }
 
-    rent_value() { }
+    rentValue() {
+        // Lógica para calcular o valor do aluguel
+    }
 
-    pay_rent(player, bank) { }
+    payRent(player, bank) {
+        // Lógica de pagamento de aluguel
+    }
 
-    visit(player, bank) { }
+    visit(player, bank) {
+        // Lógica de visita
+    }
 }

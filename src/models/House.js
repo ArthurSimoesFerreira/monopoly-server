@@ -1,9 +1,14 @@
+// src/models/House.js
 export class House {
-    constructor(positionOnBoard) {
-        this.board_position = positionOnBoard;
+    constructor(boardPosition) {
+        this.boardPosition = boardPosition;
     }
 
-    visit(player, bank) { }
+    visit(player, bank) {
+        // Lógica de visita
+    }
 
-    buy(player, bank) { }
+    buy(player, bank) {
+        // Lógica de compra
+    }
 }

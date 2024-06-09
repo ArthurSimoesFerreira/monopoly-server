@@ -1,25 +1,39 @@
+import { Player } from "../Player";
 import { House } from "../House";
-
 export class Property extends House {
-    constructor(positionOnBoard, propertyName, owner, price, rent) {
-        super(positionOnBoard)
-        this.property_name = propertyName;
-        this.owner = owner;
+    constructor(boardPosition, propertyName, price, rent) {
+        super(boardPosition);
+        this.propertyName = propertyName;
+        this.owner = null;
         this.price = price;
         this.rent = rent;
     }
 
-    buy(player, bank) { }
+    buy(player, bank) {
+        // Lógica de compra
+    }
 
-    sell(player, bank) { }
+    sell(player, bank) {
+        // Lógica de venda
+    }
 
-    auction() { }
+    auction() {
+        // Lógica de leilão
+    }
 
-    has_owner() { }
+    hasOwner() {
+        return this.owner !== null;
+    }
 
-    pay_rent(player, bank) { }
+    payRent(player, bank) {
+        // Lógica de pagamento de aluguel
+    }
 
-    visit(player) { }
+    visit(player, bank) {
+        // Lógica de visita
+    }
 
-    set_owner(player) { }
+    setOwner(player) {
+        this.owner = player;
+    }
 }

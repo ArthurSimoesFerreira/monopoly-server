@@ -1,6 +1,7 @@
+import { House } from "../House";
+
 export class Start extends House {
-    constructor(positionOnBoard) {
-        super(positionOnBoard);
+    visit(player, bank) {
+        // Lógica de visita para o início
     }
-    visit(player, bank) { }
 }
