@@ -1,13 +1,12 @@
 // src/events/playerConnection.js
+import { GameController } from '../controllers/GameController.js';
+
 export function handlePlayerConnection(io, socket, game) {
     socket.on('playerConnect', (playerName) => {
-        const newPlayer = { id: socket.id, name: playerName, position: 0, money: 1500 };
-        game.players[socket.id] = newPlayer;
-        io.emit('playerUpdate', game.players);
+        GameController.playerConnect(io, socket, game, playerName);
     });
 
     socket.on('disconnect', () => {
-        delete game.players[socket.id];
-        io.emit('playerUpdate', game.players);
+        GameController.playerDisconnect(io, socket, game);
     });
 }

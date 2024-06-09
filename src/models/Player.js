@@ -15,31 +15,72 @@ export class Player {
         this.residentials = [];
     }
 
-    debit_money(amount) { }
+    debitMoney(amount) {
+        if (this.money >= amount) {
+            this.money -= amount;
+            return true;
+        }
+        return false;
+    }
 
-    debit_money_forced(amount) { }
+    debitMoneyForced(amount) {
+        this.money -= amount;
+        return this.money >= 0;
+    }
 
-    receive_money(money) { }
+    receiveMoney(money) {
+        this.money += money;
+    }
 
-    add_residential(residential) { }
+    addResidential(residential) {
+        this.residentials.push(residential);
+    }
 
-    add_service(service) { }
+    addService(service) {
+        this.services.push(service);
+    }
 
-    add_station(station) { }
+    addStation(station) {
+        this.stations.push(station);
+    }
 
-    remove_residential(residential) { }
+    removeResidential(residential) {
+        const index = this.residentials.indexOf(residential);
+        if (index !== -1) {
+            this.residentials.splice(index, 1);
+        }
+    }
 
-    remove_service(service) { }
+    removeService(service) {
+        const index = this.services.indexOf(service);
+        if (index !== -1) {
+            this.services.splice(index, 1);
+        }
+    }
 
-    remove_station(station) { }
+    removeStation(station) {
+        const index = this.stations.indexOf(station);
+        if (index !== -1) {
+            this.stations.splice(index, 1);
+        }
+    }
 
-    use_card(card) { }
+    useCard(card) {
+        // Lógica para usar uma carta
+    }
 
-    be_arrested() { }
+    beArrested() {
+        this.in_jail = true;
+    }
 
-    get_out_of_jail() { }
+    getOutOfJail() {
+        this.in_jail = false;
+    }
 
-    bankrupt() { }
+    bankrupt() {
+        this.bankrupted = true;
+        // Lógica adicional para falência
+    }
 
     adjustMoney(amount) {
         this.money += amount;
