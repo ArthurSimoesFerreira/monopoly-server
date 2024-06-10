@@ -2,6 +2,7 @@
 import { Player } from './Player.js';
 import { Property } from './Houses/Property.js';
 import { House } from './House.js';
+import { Pawn } from './Pawn.js';
 
 export class Board {
     constructor() {
@@ -18,7 +19,10 @@ export class Board {
     movePawn(player, moveSpaces) {
         const playerPosition = this.positions.find(p => p.pawn.player.id === player.id);
         if (playerPosition) {
-            playerPosition.position = (playerPosition.position + moveSpaces) % this.houses.length;
+            const newPosition = (playerPosition.position + moveSpaces) % this.houses.length;
+            playerPosition.position = newPosition;
+            this.updatePawnPosition(player.id, newPosition);
+            this.currentHouse = this.houses[newPosition];
         }
     }
 
@@ -26,6 +30,15 @@ export class Board {
         const playerPosition = this.positions.find(p => p.pawn.player.id === player.id);
         if (playerPosition) {
             playerPosition.position = finalPosition;
+            this.updatePawnPosition(player.id, finalPosition);
+            this.currentHouse = this.houses[finalPosition];
+        }
+    }
+
+    updatePawnPosition(playerId, newPosition) {
+        const index = this.positions.findIndex(p => p.pawn.player.id === playerId);
+        if (index !== -1) {
+            this.positions[index].position = newPosition;
         }
     }
 

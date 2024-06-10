@@ -1,6 +1,5 @@
 // src/models/Jail.js
 import { House } from "../House.js";
-
 export class Jail extends House {
     constructor(boardPosition) {
         super(boardPosition);
