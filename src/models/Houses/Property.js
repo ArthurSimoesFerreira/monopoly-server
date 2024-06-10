@@ -1,5 +1,5 @@
-import { Player } from "../Player";
-import { House } from "../House";
+import { Player } from "../Player.js";
+import { House } from "../House.js";
 export class Property extends House {
     constructor(boardPosition, propertyName, price, rent) {
         super(boardPosition);

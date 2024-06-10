@@ -13,6 +13,7 @@ export class Player {
         this.services = [];
         this.stations = [];
         this.residentials = [];
+        this.pawn = new Pawn(this); // Adiciona um peão ao jogador
     }
 
     debitMoney(amount) {

@@ -2,12 +2,14 @@
 import { Player } from './Player.js';
 import { Dice } from './Dice.js';
 import { Bank } from './Bank.js';
+import { Board } from './Board.js';
 
 export class Game {
     constructor() {
         this.players = {};
-        this.dice = [new Dice(), new Dice()]; // Cria uma lista de dois dados
-        this.bank = new Bank(); // Adiciona uma instância do banco
+        this.dice = [new Dice(), new Dice()];
+        this.bank = new Bank();
+        this.board = new Board();
     }
 
     addPlayer(id, name) {
