@@ -18,7 +18,7 @@ const io = new Server(server, {
 
 app.use(cors());
 
-const game = new Game();
+const game = Game.getInstance();
 
 io.on('connection', (socket) => {
     console.log('a user connected:', socket.id);

@@ -5,7 +5,21 @@ import { House } from './House.js';
 import { Pawn } from './Pawn.js';
 
 export class Board {
+
+    static instance = null;
+
+    static get_instance() {
+        if (!Board.instance) {
+            Board.instance = new Board()
+        }
+        return Board.instance
+    }
+
     constructor() {
+        if (Board.instance) {
+            throw new Error("This class is a Singleton!");
+        }
+
         this.houseQuantity = 0;
         this.positions = []; // [{ pawn: Pawn, position: int }]
         this.currentHouse = null;

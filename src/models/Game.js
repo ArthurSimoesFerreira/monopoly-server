@@ -5,11 +5,25 @@ import { Bank } from './Bank.js';
 import { Board } from './Board.js';
 
 export class Game {
+    static instance = null;
+
+    static getInstance() {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+
+        return Game.instance;
+    }
+
     constructor() {
+        if (Game.instance) {
+            throw new Error("This class is a Singleton!");
+        }
+
         this.players = {};
         this.dice = [new Dice(), new Dice()];
         this.bank = new Bank();
-        this.board = new Board();
+        this.board = Board.get_instance();
     }
 
     addPlayer(id, name) {
