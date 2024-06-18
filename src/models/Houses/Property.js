@@ -10,11 +10,12 @@ export class Property extends House {
     }
 
     buy(player, bank) {
-        // Lógica de compra
+        this.setOwner(player);
     }
 
     sell(player, bank) {
-        // Lógica de venda
+        bank.transferMoney(player, this.owner, this.price);
+        this.setOwner(player);
     }
 
     auction() {
@@ -26,11 +27,11 @@ export class Property extends House {
     }
 
     payRent(player, bank) {
-        // Lógica de pagamento de aluguel
+        bank.transferMoney(player, this.owner, this.rent);
     }
 
     visit(player, bank) {
-        // Lógica de visita
+        this.payRent(player, bank);
     }
 
     setOwner(player) {
