@@ -39,43 +39,4 @@ export class Game {
         return this.dice.map(die => die.value);
     }
 
-    handleTransaction(senderId, receiverId, amount) {
-        const sender = this.players[senderId];
-        const receiver = this.players[receiverId];
-        if (sender && receiver) {
-            return this.bank.transferMoney(sender, receiver, amount);
-        }
-        return false;
-    }
-
-    handleBankPayment(playerId, amount) {
-        const player = this.players[playerId];
-        if (player) {
-            this.bank.giveMoney(player, amount);
-        }
-    }
-
-    handleBankCollection(playerId, amount) {
-        const player = this.players[playerId];
-        if (player) {
-            return this.bank.collectMoney(player, amount);
-        }
-        return false;
-    }
-
-    handleBuyHouse(playerId, cost) {
-        const player = this.players[playerId];
-        if (player) {
-            return this.bank.buyHouse(player, cost);
-        }
-        return false;
-    }
-
-    handleBuyHotel(playerId, cost) {
-        const player = this.players[playerId];
-        if (player) {
-            return this.bank.buyHotel(player, cost);
-        }
-        return false;
-    }
 }
