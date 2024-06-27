@@ -7,10 +7,6 @@ export class Residential extends Property {
         this.hotel = hotel;
     }
 
-    payRent(player, bank) {
-        // Lógica de pagamento de aluguel
-    }
-
     buyHouse(bank) {
         // Lógica de compra de casa
     }

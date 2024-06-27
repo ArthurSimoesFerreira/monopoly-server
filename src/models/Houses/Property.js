@@ -31,7 +31,9 @@ export class Property extends House {
     }
 
     visit(player, bank) {
-        this.payRent(player, bank);
+        if(player != this.owner){
+            this.payRent(player, bank);
+        }
     }
 
     setOwner(player) {

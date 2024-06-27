@@ -25,6 +25,11 @@ export class GameController {
                         io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
                         io.emit('playerArrested', { playerId: socket.id, message: `${player.name} foi preso por rolar três vezes o mesmo número.` });
                     } else {
+                        game.board.movePawn(player, totalRoll);
+                        const currentPosition = game.board.positions.find(p => p.pawn.player.id === player.id).position;
+                        const currentHouse = game.board.houses[currentPosition];
+                        currentHouse.visit(player, game.bank);
+                        io.emit('updatePositions', game.board.positions);
                         io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
                         rollAndMove();
                     }
