@@ -1,29 +1,42 @@
 import { Property } from "../Property";
 
 export class Residential extends Property {
-    constructor(boardPosition, propertyName, price, rent, houses, hotel) {
+    constructor(boardPosition, propertyName, price, rent) {
         super(boardPosition, propertyName, price, rent);
-        this.houses = houses;
-        this.hotel = hotel;
+        this.littleHouses = 0;
+        this.L_house_price = 200;
+        this.hotel = 0;
+        this.hotel_price = 200;
+        this.house_increment = 100
     }
 
     payRent(player, bank) {
-        bank.transferMoney(player, this.rent);
+        bank.transferMoney(player, this.owner, this.rent);
     }
 
-    buyHouse(bank) {
-        // Lógica de compra de casa
+    buyLittleHouse(player, bank, io) {
+        if(bank.buyLittleHouse(player, this.L_house_price)){
+            this.littleHouses += 1;
+            return true
+        }else{
+            return false
+        }
     }
 
-    sellHouse(bank) {
+    sellLittleHouse(bank) {
         // Lógica de venda de casa
     }
 
     rentValue() {
-        // Lógica para calcular o valor do aluguel
+        this.rent = this.rent + (this.house_increment*this.littleHouses)
     }
 
-    visit(player, bank) {
-        // Lógica de visita
+    visit(player, bank, io) {
+        if (this.owner && this.owner != player) {
+            this.payRent(player, bank)
+        }
+        else if (this.owner != player) {
+            io.emit('noOwner', this.price);
+        }
     }
 }

@@ -10,7 +10,12 @@ export class Property extends House {
     }
 
     buy(player, bank) {
-        this.setOwner(player);
+        if (bank.collectMoney(player, this.price)) {
+            this.owner = player;
+            player.addResidential(this);
+            return true;
+        }
+        else return false;
     }
 
     sell(player, bank) {
@@ -22,19 +27,12 @@ export class Property extends House {
         // Lógica de leilão
     }
 
-    hasOwner() {
-        return this.owner !== null;
-    }
 
     payRent(player, bank) {
         bank.collectMoney(player, this.rent);
     }
 
-    visit(player, bank) {
+    visit(player, bank, io) {
         this.payRent(player, bank);
-    }
-
-    setOwner(player) {
-        this.owner = player;
     }
 }

@@ -45,7 +45,7 @@ export class Bank {
         return allPaid;
     }
 
-    buyHouse(player, cost) {
+    buyLittleHouse(player, cost) {
         if (this.availableHouses > 0 && player.money >= cost) {
             player.adjustMoney(-cost);
             this.availableHouses -= 1;

@@ -12,7 +12,7 @@ export class Station extends Property {
         // Lógica de pagamento de aluguel
     }
 
-    visit(player, bank) {
+    visit(player, bank, io) {
         // Lógica de visita
     }
 }

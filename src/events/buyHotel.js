@@ -2,7 +2,7 @@
 import { GameController } from '../controllers/GameController.js';
 
 export function handleBuyHotel(io, socket, game) {
-    socket.on('buyHotel', ({ playerId, cost }) => {
-        GameController.buyHotel(io, socket, game, playerId, cost);
+    socket.on('buyHotel', () => {
+        GameController.buyHotel(io, socket, game);
     });
 }

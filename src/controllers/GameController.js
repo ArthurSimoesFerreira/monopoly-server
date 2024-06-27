@@ -3,8 +3,24 @@ import { Player } from '../models/Player.js';
 import { Jail } from '../models/Houses/Jail.js';
 
 export class GameController {
+
+    static findPlayer(game, socket) {
+        const player = game.players.find(player => player.id === socket.id);
+        return player;
+    }
+
+    static findCurrentHouse(game, player) {
+        const currentPosition = game.board.positions.find(p => p.pawn.player.id === player.id).position;
+        const currentHouse = game.board.houses[currentPosition];
+        return currentHouse;
+    }
+
+    static startBoard(io, socket, game) {
+        
+    }
+
     static rollDice(io, socket, game) {
-        const player = game.players[socket.id];
+        const player = this.findPlayer(game, socket)
 
         if (player) {
             const rollAndMove = () => {
@@ -20,15 +36,14 @@ export class GameController {
                         const jailPosition = jail.boardPosition;
 
                         game.board.transferPawn(player, jailPosition);
-                        jail.visit(player, game.bank);
+                        jail.visit(player, game.bank, io);
                         io.emit('updatePositions', game.board.positions);
                         io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
                         io.emit('playerArrested', { playerId: socket.id, message: `${player.name} foi preso por rolar três vezes o mesmo número.` });
                     } else {
                         game.board.movePawn(player, totalRoll);
-                        const currentPosition = game.board.positions.find(p => p.pawn.player.id === player.id).position;
-                        const currentHouse = game.board.houses[currentPosition];
-                        currentHouse.visit(player, game.bank);
+                        const currentHouse = this.findCurrentHouse(game, player)
+                        currentHouse.visit(player, game.bank, io);
                         io.emit('updatePositions', game.board.positions);
                         io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
                         rollAndMove();
@@ -36,8 +51,7 @@ export class GameController {
                 } else {
                     player.double_counter = 0;
                     game.board.movePawn(player, totalRoll);
-                    const currentPosition = game.board.positions.find(p => p.pawn.player.id === player.id).position;
-                    const currentHouse = game.board.houses[currentPosition];
+                    const currentHouse = this.findCurrentHouse(game, player);
                     currentHouse.visit(player, game.bank);
                     io.emit('updatePositions', game.board.positions);
                     io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
@@ -60,55 +74,52 @@ export class GameController {
         io.emit('playerUpdate', game.players);
     }
 
-    static transaction(io, socket, game, senderId, receiverId, amount) {
-        const sender = game.players[senderId];
-        const receiver = game.players[receiverId];
-        if (sender && receiver) {
-            if (game.bank.transferMoney(sender, receiver, amount)) {
-                io.emit('transactionSuccess', { senderId, receiverId, amount });
-            } else {
-                io.emit('transactionFailed', { senderId, receiverId, amount });
-            }
-        }
-    }
-
-    static bankPayment(io, socket, game, playerId, amount) {
-        const player = game.players[playerId];
+    static bankPayment(io, socket, game, amount) {
+        const player = this.findPlayer(game, socket);
         if (player) {
             game.bank.giveMoney(player, amount);
-            io.emit('bankPaymentSuccess', { playerId, amount });
+            io.emit('bankPaymentSuccess', { playerId: socket.id, amount });
         }
     }
 
-    static bankCollection(io, socket, game, playerId, amount) {
-        const player = game.players[playerId];
+    static bankCollection(io, socket, game, amount) {
+        const player = this.findPlayer(game, socket);
         if (player) {
             if (game.bank.collectMoney(player, amount)) {
-                io.emit('bankCollectionSuccess', { playerId, amount });
+                io.emit('bankCollectionSuccess', { playerId: socket.id, amount });
             } else {
-                io.emit('bankCollectionFailed', { playerId, amount });
+                io.emit('bankCollectionFailed', { playerId: socket.id, amount });
             }
         }
     }
 
-    static buyHouse(io, socket, game, playerId, cost) {
-        const player = game.players[playerId];
+    static buyProperty(io, socket, game) {
+        const player = this.findPlayer(game, socket);
         if (player) {
-            if (game.bank.buyHouse(player, cost)) {
-                io.emit('buyHouseSuccess', { playerId, cost });
+            currentHouse = this.findCurrentHouse(game, player);
+            if (currentHouse.buy(player, game.bank)) {
+                io.emit('housePurchaseSuccess')
             } else {
-                io.emit('buyHouseFailed', { playerId, cost });
+                io.emit('housePurchaseFailed')
             }
         }
     }
 
-    static buyHotel(io, socket, game, playerId, cost) {
-        const player = game.players[playerId];
+    static buyHotel(io, socket, game) {
+        const player = this.findPlayer(game, socket);
         if (player) {
-            if (game.bank.buyHotel(player, cost)) {
-                io.emit('buyHotelSuccess', { playerId, cost });
+
+        }
+    }
+
+    static buyLittleHouse(io, socket, game) {
+        const player = this.findPlayer(game, socket);
+        if (player) {
+            currentHouse = this.findCurrentHouse(game, player);
+            if (currentHouse.buyLittleHouse(player, game.bank)) {
+                io.emit('littleHousePurchaseSuccess')
             } else {
-                io.emit('buyHotelFailed', { playerId, cost });
+                io.emit('littleHousePurchaseFailed')
             }
         }
     }

@@ -5,11 +5,7 @@ export class House {
         this.type = "";
     }
 
-    visit(player, bank) {
+    visit(player, bank, io) {
         // Lógica de visita
-    }
-
-    buy(player, bank) {
-        // Lógica de compra
     }
 }

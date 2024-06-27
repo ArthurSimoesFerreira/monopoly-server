@@ -12,7 +12,7 @@ export class Service extends Property {
         // Lógica de pagamento de aluguel
     }
 
-    visit(player, bank) {
+    visit(player, bank, io) {
         // Lógica de visita
     }
 }

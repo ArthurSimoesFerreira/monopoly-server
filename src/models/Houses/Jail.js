@@ -6,7 +6,7 @@ export class Jail extends House {
         this.type = "jail";
     }
 
-    visit(player, bank) {
+    visit(player, bank, io) {
         player.beArrested();
         // Lógica adicional para a visita à prisão
     }

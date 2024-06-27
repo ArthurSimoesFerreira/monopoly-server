@@ -20,18 +20,19 @@ export class Game {
             throw new Error("This class is a Singleton!");
         }
 
-        this.players = {};
+        this.players = [];
         this.dice = [new Dice(), new Dice()];
         this.bank = new Bank();
         this.board = Board.get_instance();
     }
 
     addPlayer(id, name) {
-        this.players[id] = new Player(id, name);
+        this.players.push(new Player(id, name));
     }
 
     removePlayer(id) {
-        delete this.players[id];
+        index = this.players.findIndex(player => player.id === id);
+        this.players.pop(index);
     }
 
     rollAllDice() {

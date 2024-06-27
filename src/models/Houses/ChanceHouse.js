@@ -6,7 +6,7 @@ export class ChanceHouse extends House {
         this.type = type;
     }
 
-    visit(player, bank) {
+    visit(player, bank, io) {
         // Lógica de visita para a casa de carta
     }
 }
