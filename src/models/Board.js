@@ -26,10 +26,6 @@ export class Board {
         this.houses = [];
     }
 
-    initializeBoard() {
-        // Lógica para inicializar o tabuleiro
-    }
-
     movePawn(player, moveSpaces) {
         const playerPosition = this.positions.find(p => p.pawn.player.id === player.id);
         if (playerPosition) {
@@ -38,6 +34,7 @@ export class Board {
             this.updatePawnPosition(player.id, newPosition);
             this.currentHouse = this.houses[newPosition];
         }
+        return this.currentHouse;
     }
 
     transferPawn(player, finalPosition) {

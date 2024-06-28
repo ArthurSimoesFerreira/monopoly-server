@@ -1,22 +1,48 @@
 // src/server/controllers/GameController.js
 import { Player } from '../models/Player.js';
 import { Jail } from '../models/Houses/Jail.js';
+import { Board } from '../models/Board.js';
+import { Pawn } from '../models/Pawn.js';
+import { GroupOfProperties } from '../models/GroupOfProperties.js';
 
 export class GameController {
+    
+    static playerConnect(io, socket, game, playerName) {
+        const newPlayer = new Player(socket.id, playerName);
+        game.addPlayer(socket.id, playerName);
+        game.board.positions.push({ pawn: newPlayer.pawn, position: 0 });
+        io.emit('playerUpdate', game.players);
+    }
+    
+    static playerDisconnect(io, socket, game) {
+        game.removePlayer(socket.id);
+        io.emit('playerUpdate', game.players);
+    }
+
+    static intializeBoard(io, socket, game) {
+        game.board = Board.get_instance();
+        game.players.forEach(player => {
+            pawn = new Pawn(player);
+            game.board.positions.push({pawn: pawn, position: 0});
+        });
+
+        // Criar grupos de propriedades
+        redGroup = new GroupOfProperties("red");
+        greenGroup = new GroupOfProperties("green");
+        blueGroup = new GroupOfProperties("blue");
+        purpleGroup = new GroupOfProperties("purple");
+        brownGroup = new GroupOfProperties("brown");
+        yellowGroup = new GroupOfProperties("yellow");
+        orangeGroup = new GroupOfProperties("orange");
+        skyBlueGroup = new GroupOfProperties("skyBlue");
+
+        
+
+    }
 
     static findPlayer(game, socket) {
         const player = game.players.find(player => player.id === socket.id);
         return player;
-    }
-
-    static findCurrentHouse(game, player) {
-        const currentPosition = game.board.positions.find(p => p.pawn.player.id === player.id).position;
-        const currentHouse = game.board.houses[currentPosition];
-        return currentHouse;
-    }
-
-    static startBoard(io, socket, game) {
-        
     }
 
     static rollDice(io, socket, game) {
@@ -41,8 +67,7 @@ export class GameController {
                         io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
                         io.emit('playerArrested', { playerId: socket.id, message: `${player.name} foi preso por rolar três vezes o mesmo número.` });
                     } else {
-                        game.board.movePawn(player, totalRoll);
-                        const currentHouse = this.findCurrentHouse(game, player)
+                        const currentHouse = game.board.movePawn(player, totalRoll);
                         currentHouse.visit(player, game.bank, io);
                         io.emit('updatePositions', game.board.positions);
                         io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
@@ -50,8 +75,7 @@ export class GameController {
                     }
                 } else {
                     player.double_counter = 0;
-                    game.board.movePawn(player, totalRoll);
-                    const currentHouse = this.findCurrentHouse(game, player);
+                    const currentHouse = game.board.movePawn(player, totalRoll);
                     currentHouse.visit(player, game.bank);
                     io.emit('updatePositions', game.board.positions);
                     io.emit('diceResult', { playerId: socket.id, diceValues, totalRoll });
@@ -60,18 +84,6 @@ export class GameController {
 
             rollAndMove();
         }
-    }
-
-    static playerConnect(io, socket, game, playerName) {
-        const newPlayer = new Player(socket.id, playerName);
-        game.addPlayer(socket.id, playerName);
-        game.board.positions.push({ pawn: newPlayer.pawn, position: 0 });
-        io.emit('playerUpdate', game.players);
-    }
-
-    static playerDisconnect(io, socket, game) {
-        game.removePlayer(socket.id);
-        io.emit('playerUpdate', game.players);
     }
 
     static bankPayment(io, socket, game, amount) {
@@ -96,7 +108,7 @@ export class GameController {
     static buyProperty(io, socket, game) {
         const player = this.findPlayer(game, socket);
         if (player) {
-            currentHouse = this.findCurrentHouse(game, player);
+            currentHouse = game.board.currentHouse;
             if (currentHouse.buy(player, game.bank)) {
                 io.emit('housePurchaseSuccess')
             } else {
@@ -115,7 +127,7 @@ export class GameController {
     static buyLittleHouse(io, socket, game) {
         const player = this.findPlayer(game, socket);
         if (player) {
-            currentHouse = this.findCurrentHouse(game, player);
+            currentHouse = game.board.currentHouse;
             if (currentHouse.buyLittleHouse(player, game.bank)) {
                 io.emit('littleHousePurchaseSuccess')
             } else {

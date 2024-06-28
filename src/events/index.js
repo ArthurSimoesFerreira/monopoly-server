@@ -5,7 +5,7 @@ import { handleBankPayment } from './bankPayment.js';
 import { handleBankCollection } from './bankCollection.js';
 import { handleBuyProperty } from './buyProperty.js';
 import { handleBuyHotel } from './buyHotel.js';
-import { handleStartBoard } from './startBoard.js';
+import { handleInitializeBoard } from './initializeBoard.js';
 
 export function setupSocketEvents(io, socket, game) {
     handleRollDice(io, socket, game);
@@ -14,5 +14,5 @@ export function setupSocketEvents(io, socket, game) {
     handleBankCollection(io, socket, game);
     handleBuyProperty(io, socket, game);
     handleBuyHotel(io, socket, game);
-    handleStartBoard(io, socket, game);
+    handleInitializeBoard(io, socket, game);
 }
