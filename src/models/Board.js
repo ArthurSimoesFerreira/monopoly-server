@@ -10,9 +10,9 @@ export class Board {
 
     static get_instance() {
         if (!Board.instance) {
-            Board.instance = new Board()
+            Board.instance = new Board();
         }
-        return Board.instance
+        return Board.instance;
     }
 
     constructor() {

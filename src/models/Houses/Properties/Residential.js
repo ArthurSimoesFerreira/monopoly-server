@@ -1,8 +1,10 @@
-import { Property } from "../Property";
+import { Property } from "../Property.js";
 
 export class Residential extends Property {
-    constructor(boardPosition, propertyName, price, rent) {
-        super(boardPosition, propertyName, price, rent);
+    constructor(propertyName, price, rent) {
+        this.propertyName = propertyName;
+        this.price = price;
+        this.rent = rent;
         this.littleHouses = 0;
         this.L_house_price = 200;
         this.hotel = 0;

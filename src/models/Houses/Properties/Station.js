@@ -1,7 +1,7 @@
 import { Property } from "../Property";
 export class Station extends Property {
-    constructor(boardPosition, propertyName, price, rent) {
-        super(boardPosition, propertyName, price, rent);
+    constructor(propertyName, price, rent) {
+        super(propertyName, price, rent);
     }
 
     rentValue() {

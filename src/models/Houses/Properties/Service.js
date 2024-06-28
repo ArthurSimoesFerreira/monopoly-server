@@ -1,7 +1,7 @@
 import { Property } from "../Property";
 export class Service extends Property {
-    constructor(boardPosition, propertyName, price, rent) {
-        super(boardPosition, propertyName, price, rent);
+    constructor(propertyName, price, rent, qtd) {
+        super(propertyName, price, rent, qtd);
     }
 
     rentValue() {

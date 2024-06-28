@@ -1,7 +1,7 @@
 import GameController from "../controllers/GameController.js"
 
 export function handleInitializeBoard(io, socket, game) {
-    socket.on("startBoard", () => {
+    socket.on("initializeBoard", () => {
         GameController.intializeBoard(io, socket, game)
     })
 }

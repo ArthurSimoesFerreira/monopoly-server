@@ -4,16 +4,17 @@ import { Jail } from '../models/Houses/Jail.js';
 import { Board } from '../models/Board.js';
 import { Pawn } from '../models/Pawn.js';
 import { GroupOfProperties } from '../models/GroupOfProperties.js';
+import { Residential } from '../models/Houses/Properties/Residential.js';
 
 export class GameController {
-    
+
     static playerConnect(io, socket, game, playerName) {
         const newPlayer = new Player(socket.id, playerName);
         game.addPlayer(socket.id, playerName);
         game.board.positions.push({ pawn: newPlayer.pawn, position: 0 });
         io.emit('playerUpdate', game.players);
     }
-    
+
     static playerDisconnect(io, socket, game) {
         game.removePlayer(socket.id);
         io.emit('playerUpdate', game.players);
@@ -23,7 +24,7 @@ export class GameController {
         game.board = Board.get_instance();
         game.players.forEach(player => {
             pawn = new Pawn(player);
-            game.board.positions.push({pawn: pawn, position: 0});
+            game.board.positions.push({ pawn: pawn, position: 0 });
         });
 
         // Criar grupos de propriedades
@@ -36,8 +37,111 @@ export class GameController {
         orangeGroup = new GroupOfProperties("orange");
         skyBlueGroup = new GroupOfProperties("skyBlue");
 
-        
+        // Criar propriedades
+        let residentials = [];
+        residentials.push(new Residential("Avenida Ary Parreiras", 200, 25));
+        residentials.push(new Residential("Rua Presidente Backer", 200, 25));
+        residentials.push(new Residential("Rua Miguel de Frias", 200, 25));
+        redGroup.addResidentials(residentials);
 
+        residentials = [];
+        residentials.push(new Residential("Rua Paulo Alves", 200, 25));
+        residentials.push(new Residential("Rua Gavião Peixoto", 200, 25));
+        residentials.push(new Residential("Rua Mariz e Barros", 200, 25));
+        greenGroup.addResidentials(residentials);
+
+        residentials = [];
+        residentials.push(new Residential("Rua Joaquim Távora", 200, 25));
+        residentials.push(new Residential("Rua Doutor Celestino", 200, 25));
+        blueGroup.addResidentials(residentials);
+
+        residentials = [];
+        residentials.push(new Residential("Rua Noronha Torrezão", 200, 25));
+        residentials.push(new Residential("Rua Almirante Tamandaré", 200, 25));
+        residentials.push(new Residential("Rua Desembargador Lima Castro", 200, 25));
+        purpleGroup.addResidentials(residentials);
+
+        residentials = [];
+        residentials.push(new Residential("Rua Fagundes Varela", 200, 25));
+        residentials.push(new Residential("Rua Marquês de Paraná", 200, 25));
+        brownGroup.addResidentials(residentials);
+
+        residentials = [];
+        residentials.push(new Residential("Rua Álvares de Azevedo", 200, 25));
+        residentials.push(new Residential("Rua São João", 200, 25));
+        residentials.push(new Residential("Rua Professor Heitor Carrilho", 200, 25));
+        yellowGroup.addResidentials(residentials);
+
+        residentials = [];
+        residentials.push(new Residential("Rua Doutor Nelson de Sá Earp", 200, 25));
+        residentials.push(new Residential("Rua Cinco de Julho", 200, 25));
+        residentials.push(new Residential("Rua Visconde do Rio Branco", 200, 25));
+        orangeGroup.addResidentials(residentials);
+
+        residentials = [];
+        residentials.push(new Residential("Rua Mariz e Barros", 200, 25));
+        residentials.push(new Residential("Rua Tavares de Macedo", 200, 25));
+        residentials.push(new Residential("Rua Carlos Gomes", 200, 25));
+        skyBlueGroup.addResidentials(residentials);
+
+
+
+        start = new Start(200);
+        taxN = new TaxHouse(300);
+        taxL = new TaxHouse(450);
+        sorte = new ChanceHouse();
+        sorte2 = Object.assign({}, sorte);
+        sorte3 = Object.assign({}, sorte);
+        prison = new GoToJail();
+        jail = new Jail();
+        service1 = new Service("Ampla", 150, 75, 4);
+        service2 = new Service("Águas do Rio", 150, 75, 4);
+        station1 = new Station("Metro", 250, 50);
+        station2 = new Station("VLT", 250, 50);
+        station3 = new Station("BRT", 250, 50);
+        station4 = new Station("Terminal", 250, 50);
+
+        board.houses = [
+            start,
+            brownGroup.residential[0],
+            brownGroup.residential[1],
+            taxN,
+            station1,
+            skyBlueGroup.residential[0],
+            sorte,
+            skyBlueGroup.residential[1],
+            skyBlueGroup.residential[2],
+            jail,
+            purpleGroup.residential[0],
+            service1,
+            purpleGroup.residential[0],
+            purpleGroup.residential[1],
+            station2,
+            orangeGroup.residential[0],
+            orangeGroup.residential[1],
+            orangeGroup.residential[2],
+            null,//parking lot
+            redGroup.residential[0],
+            sorte2,
+            redGroup.residential[1],
+            redGroup.residential[2],
+            station3,
+            yellowGroup.residential[0],
+            yellowGroup.residential[1],
+            service2,
+            yellowGroup.residential[2],
+            prison,
+            greenGroup.residential[0],
+            greenGroup.residential[1],
+            greenGroup.residential[2],
+            station4,
+            sorte3,
+            blueGroup.residential[0],
+            taxL,
+            blueGroup.residential[1],
+        ];
+        io.emit('boardInitialized', { houses: board.houses, positions: board.positions })
+        print(board.houses);
     }
 
     static findPlayer(game, socket) {

@@ -1,7 +1,10 @@
 import { House } from "../House";
 
 export class Start extends House {
+    constructor(price){
+        this.price = price
+    }
     visit(player, bank, io) {
-        // Lógica de visita para o início
+        bank.giveMoney(player, this.price)
     }
 }
