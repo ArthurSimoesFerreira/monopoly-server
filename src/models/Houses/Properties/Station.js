@@ -1,4 +1,4 @@
-import { Property } from "../Property";
+import { Property } from "../Property.js";
 export class Station extends Property {
     constructor(propertyName, price, rent) {
         super(propertyName, price, rent);

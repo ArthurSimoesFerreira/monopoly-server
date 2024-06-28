@@ -2,6 +2,7 @@ import { Player } from "../Player.js";
 import { House } from "../House.js";
 export class Property extends House {
     constructor(propertyName, price, rent) {
+        super()
         this.propertyName = propertyName;
         this.owner = null;
         this.price = price;

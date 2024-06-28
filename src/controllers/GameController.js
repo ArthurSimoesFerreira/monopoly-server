@@ -5,6 +5,12 @@ import { Board } from '../models/Board.js';
 import { Pawn } from '../models/Pawn.js';
 import { GroupOfProperties } from '../models/GroupOfProperties.js';
 import { Residential } from '../models/Houses/Properties/Residential.js';
+import { Start } from '../models/Houses/Start.js';
+import { TaxHouse } from '../models/Houses/TaxHouse.js';
+import { ChanceHouse } from '../models/Houses/ChanceHouse.js';
+import { GoToJail } from '../models/Houses/GoToJail.js';
+import { Service } from '../models/Houses/Properties/Service.js';
+import { Station } from '../models/Houses/Properties/Station.js';
 
 export class GameController {
 
@@ -20,7 +26,7 @@ export class GameController {
         io.emit('playerUpdate', game.players);
     }
 
-    static intializeBoard(io, socket, game) {
+    static intializeBoard(io, game) {
         game.board = Board.get_instance();
         game.players.forEach(player => {
             pawn = new Pawn(player);
@@ -28,14 +34,14 @@ export class GameController {
         });
 
         // Criar grupos de propriedades
-        redGroup = new GroupOfProperties("red");
-        greenGroup = new GroupOfProperties("green");
-        blueGroup = new GroupOfProperties("blue");
-        purpleGroup = new GroupOfProperties("purple");
-        brownGroup = new GroupOfProperties("brown");
-        yellowGroup = new GroupOfProperties("yellow");
-        orangeGroup = new GroupOfProperties("orange");
-        skyBlueGroup = new GroupOfProperties("skyBlue");
+        const redGroup = new GroupOfProperties("red");
+        const greenGroup = new GroupOfProperties("green");
+        const blueGroup = new GroupOfProperties("blue");
+        const purpleGroup = new GroupOfProperties("purple");
+        const brownGroup = new GroupOfProperties("brown");
+        const yellowGroup = new GroupOfProperties("yellow");
+        const orangeGroup = new GroupOfProperties("orange");
+        const skyBlueGroup = new GroupOfProperties("skyBlue");
 
         // Criar propriedades
         let residentials = [];
@@ -85,63 +91,62 @@ export class GameController {
         skyBlueGroup.addResidentials(residentials);
 
 
+        let start = new Start(200);
+        let taxN = new TaxHouse(300);
+        let taxL = new TaxHouse(450);
+        let sorte = new ChanceHouse();
+        let sorte2 = Object.assign({}, sorte);
+        let sorte3 = Object.assign({}, sorte);
+        let prison = new GoToJail();
+        let jail = new Jail();
+        let service1 = new Service("Ampla", 150, 75);
+        let service2 = new Service("Águas do Rio", 150, 75);
+        let station1 = new Station("Metro", 250, 50);
+        let station2 = new Station("VLT", 250, 50);
+        let station3 = new Station("BRT", 250, 50);
+        let station4 = new Station("Terminal", 250, 50);
 
-        start = new Start(200);
-        taxN = new TaxHouse(300);
-        taxL = new TaxHouse(450);
-        sorte = new ChanceHouse();
-        sorte2 = Object.assign({}, sorte);
-        sorte3 = Object.assign({}, sorte);
-        prison = new GoToJail();
-        jail = new Jail();
-        service1 = new Service("Ampla", 150, 75, 4);
-        service2 = new Service("Águas do Rio", 150, 75, 4);
-        station1 = new Station("Metro", 250, 50);
-        station2 = new Station("VLT", 250, 50);
-        station3 = new Station("BRT", 250, 50);
-        station4 = new Station("Terminal", 250, 50);
-
-        board.houses = [
+        game.board.houses = [
             start,
-            brownGroup.residential[0],
-            brownGroup.residential[1],
+            brownGroup.residentials[0],
+            brownGroup.residentials[1],
             taxN,
             station1,
-            skyBlueGroup.residential[0],
+            skyBlueGroup.residentials[0],
             sorte,
-            skyBlueGroup.residential[1],
-            skyBlueGroup.residential[2],
+            skyBlueGroup.residentials[1],
+            skyBlueGroup.residentials[2],
             jail,
-            purpleGroup.residential[0],
+            purpleGroup.residentials[0],
             service1,
-            purpleGroup.residential[0],
-            purpleGroup.residential[1],
+            purpleGroup.residentials[0],
+            purpleGroup.residentials[1],
             station2,
-            orangeGroup.residential[0],
-            orangeGroup.residential[1],
-            orangeGroup.residential[2],
+            orangeGroup.residentials[0],
+            orangeGroup.residentials[1],
+            orangeGroup.residentials[2],
             null,//parking lot
-            redGroup.residential[0],
+            redGroup.residentials[0],
             sorte2,
-            redGroup.residential[1],
-            redGroup.residential[2],
+            redGroup.residentials[1],
+            redGroup.residentials[2],
             station3,
-            yellowGroup.residential[0],
-            yellowGroup.residential[1],
+            yellowGroup.residentials[0],
+            yellowGroup.residentials[1],
             service2,
-            yellowGroup.residential[2],
+            yellowGroup.residentials[2],
             prison,
-            greenGroup.residential[0],
-            greenGroup.residential[1],
-            greenGroup.residential[2],
+            greenGroup.residentials[0],
+            greenGroup.residentials[1],
+            greenGroup.residentials[2],
             station4,
             sorte3,
-            blueGroup.residential[0],
+            blueGroup.residentials[0],
             taxL,
-            blueGroup.residential[1],
+            blueGroup.residentials[1],
         ];
-        io.emit('boardInitialized', { houses: board.houses, positions: board.positions })
-        print(board.houses);
+        io.emit('boardInitialized', { houses: game.board.houses, positions: game.board.positions })
+        console.log(game.board.houses);
     }
 
     static findPlayer(game, socket) {

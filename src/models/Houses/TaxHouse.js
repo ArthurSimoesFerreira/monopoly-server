@@ -1,6 +1,7 @@
-import { House } from "../House";
+import { House } from "../House.js";
 export class TaxHouse extends House {
     constructor(price){
+        super()
         this.price = price;
     }
     visit(player, bank, io) {

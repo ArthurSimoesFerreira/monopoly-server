@@ -37,4 +37,6 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log(game)
+    GameController.intializeBoard(io, game);
 });

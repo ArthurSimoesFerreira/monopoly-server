@@ -2,9 +2,7 @@ import { Property } from "../Property.js";
 
 export class Residential extends Property {
     constructor(propertyName, price, rent) {
-        this.propertyName = propertyName;
-        this.price = price;
-        this.rent = rent;
+        super(propertyName, price, rent);
         this.littleHouses = 0;
         this.L_house_price = 200;
         this.hotel = 0;
@@ -17,10 +15,10 @@ export class Residential extends Property {
     }
 
     buyLittleHouse(player, bank, io) {
-        if(bank.buyLittleHouse(player, this.L_house_price)){
+        if (bank.buyLittleHouse(player, this.L_house_price)) {
             this.littleHouses += 1;
             return true
-        }else{
+        } else {
             return false
         }
     }
@@ -30,7 +28,7 @@ export class Residential extends Property {
     }
 
     rentValue() {
-        this.rent = this.rent + (this.house_increment*this.littleHouses)
+        this.rent = this.rent + (this.house_increment * this.littleHouses)
     }
 
     visit(player, bank, io) {

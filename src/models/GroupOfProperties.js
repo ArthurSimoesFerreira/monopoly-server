@@ -1,6 +1,6 @@
 export class GroupOfProperties {
     constructor(color) {
-        this.color = "";
+        this.color = color;
         this.quantity = 0;
         this.residentials = []
     }
