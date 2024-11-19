@@ -119,15 +119,12 @@ class Scene {
     const centerX = (minX + maxX) / 2;
     const centerY = (minY + maxY) / 2;
 
-    // Largura e altura atuais
     const width = maxX - minX;
     const height = maxY - minY;
 
-    // Fator de escala
     const scaleX = 1.8 / width;
     const scaleY = 1.8 / height;
 
-    // Criação das matrizes de transformação
     mat4.identity(this.mat);
 
     // Escala
