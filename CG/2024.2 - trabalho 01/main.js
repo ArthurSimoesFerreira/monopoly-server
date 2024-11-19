@@ -106,35 +106,47 @@ class Scene {
   }
 
   objectTransformation() {
-    // Criação da matriz identidade
-    mat4.identity(this.mat);
-
-  
-    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-    for (let i = 0; i < this.data.length / 5; i++) { // Posição ocupa 2 floats no array
-        const x = this.data[i * 5]; // Posição x
-        const y = this.data[i * 5 + 1]; // Posição y
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
+    // Calcule o centro da bounding box
+    const coords = [];
+    for (let i = 0; i < 42; i += 2) {
+        coords.push(this.data[i], this.data[i + 1]); // Apenas as coordenadas (x, y)
     }
 
-    const centerX = (minX + maxX) / 2.0;
-    const centerY = (minY + maxY) / 2.0;
+    // Calcule os limites da bounding box
+    const minX = Math.min(...coords.filter((_, index) => index % 2 === 0));
+    const maxX = Math.max(...coords.filter((_, index) => index % 2 === 0));
+    const minY = Math.min(...coords.filter((_, index) => index % 2 === 1));
+    const maxY = Math.max(...coords.filter((_, index) => index % 2 === 1));
 
-    // 2. Calcular escala necessária para ajustar a largura e altura a 1.8
-    const currentWidth = maxX - minX;
-    const currentHeight = maxY - minY;
-    const scaleX = 1.8 / currentWidth;
-    const scaleY = 1.8 / currentHeight;
+    // Centro da bounding box
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
 
-    // 3. Aplicar translação para centralizar os triângulos na origem
-    mat4.translate(this.mat, this.mat, [-centerX, -centerY, 0.0]);
+    // Largura e altura atuais
+    const width = maxX - minX;
+    const height = maxY - minY;
 
-    // 4. Aplicar escala para ajustar o tamanho
-    mat4.scale(this.mat, this.mat, [scaleX, scaleY, 1.0]);
+    // Fator de escala
+    const scaleX = 1.8 / width;
+    const scaleY = 1.8 / height;
+
+    // Criação das matrizes de transformação
+    const scaleMatrix = mat4.create();
+    const translateMatrix = mat4.create();
+    const transformationMatrix = mat4.create();
+
+    // Escala
+    mat4.scale(scaleMatrix, scaleMatrix, [scaleX, scaleY, 1]); // Escala em x, y e z
+
+    // Translação
+    mat4.translate(translateMatrix, translateMatrix, [-centerX, -centerY, 0]); // Translada para o centro
+
+    // Multiplica as matrizes (translação * escala)
+    mat4.multiply(transformationMatrix, translateMatrix, scaleMatrix);
+
+    return transformationMatrix;
 }
+
 
   
 
