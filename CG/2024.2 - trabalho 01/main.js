@@ -106,19 +106,16 @@ class Scene {
   }
 
   objectTransformation() {
-    // Calcule o centro da bounding box
     const coords = [];
     for (let i = 0; i < 42; i += 2) {
-        coords.push(this.data[i], this.data[i + 1]); // Apenas as coordenadas (x, y)
+        coords.push(this.data[i], this.data[i + 1]); // (x, y)
     }
 
-    // Calcule os limites da bounding box
     const minX = Math.min(...coords.filter((_, index) => index % 2 === 0));
     const maxX = Math.max(...coords.filter((_, index) => index % 2 === 0));
     const minY = Math.min(...coords.filter((_, index) => index % 2 === 1));
     const maxY = Math.max(...coords.filter((_, index) => index % 2 === 1));
 
-    // Centro da bounding box
     const centerX = (minX + maxX) / 2;
     const centerY = (minY + maxY) / 2;
 
@@ -131,20 +128,13 @@ class Scene {
     const scaleY = 1.8 / height;
 
     // Criação das matrizes de transformação
-    const scaleMatrix = mat4.create();
-    const translateMatrix = mat4.create();
-    const transformationMatrix = mat4.create();
+    mat4.identity(this.mat);
 
     // Escala
-    mat4.scale(scaleMatrix, scaleMatrix, [scaleX, scaleY, 1]); // Escala em x, y e z
+    mat4.scale(this.mat, this.mat, [scaleX, scaleY, 1]); // Escala em x, y e z
 
     // Translação
-    mat4.translate(translateMatrix, translateMatrix, [-centerX, -centerY, 0]); // Translada para o centro
-
-    // Multiplica as matrizes (translação * escala)
-    mat4.multiply(transformationMatrix, translateMatrix, scaleMatrix);
-
-    return transformationMatrix;
+    mat4.translate(this.mat, this.mat, [-centerX, -centerY, 0]); // Translada para o centro
 }
 
 
